@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script>
+    let globalId = 1;
+    let todoState = [];
+    let oldTodoState = [];
+
+    function addTodo() {
+      // big function we wrote in the beginning
+      const title = document.getElementById("title").value;
+      const desc = document.getElementById("description").value;
+
+      if(title && description){
+        todoState.push({
+          title: title,
+          description: desc,
+          id: globalId++,
+          complete: false
+        });
+
+        updateState(todoState);
+      } else{
+        alert("please insert title and description");
+      }
+    }
+
+    function removeTodo(todo) {
+      const element = document.getElementById(todo.id);
+      element.parent.removeChild(element);
+    }
+
+    function updateTodo(oldTodo, newTodo) {
+      const element = document.getElementById(oldTodo.id);
+      element.children[0].innerHTML = newTodo.title;
+      element.children[1].innerHTML = newTodo.description;
+      element.children[0].innerHTML = newTodo.completed ? "Mark as done" : "Done";
+    }
+
+    function updateState(newTodos) {
+      // calculate the diff b/w newTodos and oldTodos.
+      // More specifically, find out what todos are - 
+      // 1. added
+      // 2. deleted
+      // 3. updated
+      const added = newTodos.filter(todo => !oldTodoState.some(oldTodo => oldTodo.id === todo.id));
+      const deleted = oldTodoState.filter(oldTodo => !newTodos.some(todo => todo.id===oldTodo.id));
+      const updated = newTodos.filter(todo =>{
+        const oldTodo = oldTodoState.find(old => old.id === todo.id);
+        return oldTodo && (oldTodo.completed != todo.completed);
+      });
+      // calculate these 3 arrays
+      // call addTodo, removeTodo, updateTodo functions on each of the
+      // elements
+      added.forEach(addTodoElement);
+      deleted.forEach(removeTodo);
+      updated.forEach(todo => {
+        const oldTodo = oldTodoState.find(old => old.id === todo.id);
+        updateTodo(oldTodo, todo);
+      });
+
+      oldTodoState = newTodos;
+    }
+
+    function addTodoElement(todo) {
+      const todoDiv = document.createElement("div");
+      todoDiv.id = todo.id;
+      
+      const titleElement = document.createElement("h3");
+      titleElement.innerHTML = todo.title;
+      todoDiv.appendChild(titleElement);
+
+      const descElement = document.createElement("p");
+      descElement.innerHTML = todo.description;
+      todoDiv.appendChild(descElement);
+
+      const buttonElement = document.createElement("button");
+      buttonElement.innerHTML = "Mark as done";
+      buttonElement.onclick = function (){
+        todo.completed = !todo.completed;
+        updateState(todoState);
+      }
+        
+      todoDiv.appendChild(buttonElement);
+
+      const removeBtnElement = document.createElement("button");
+      removeBtnElement.innerHTML =  "remove";
+      removeBtnElement.onclick = function(){
+        todoState = todoState.filter(t => t.id !== todo.id);
+        updateState(todoState);
+      }
+      todoDiv.appendChild(removeButton);
+      document.getElementById("todos").appendChild(todoDiv);
+    }
+  </script>
+</head>
+
+<body>
+  <input type="text" id="title" placeholder="Todo title"></input> <br /><br />
+  <input type="text" id="description" placeholder="Todo description"></input> <br /><br />
+  <button onclick="addTodo()">Add todo</button>
+  <br /> <br />
+
+  <div id="todos">
+
+  </div>
+</body>
+
+</html>

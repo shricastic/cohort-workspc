@@ -1,0 +1,44 @@
+<!DOCTYPE>
+<html>
+  <head>
+    <title>
+      just some dom stuff
+    </title>
+
+    <style>
+      body{
+        text-align: center;
+        margin-top: 10%;
+      }
+      .input-box{
+        margin-bottom: 10px;
+      }
+    </style>
+  </head> 
+  
+
+  <body>
+    <h1>Simple calculator</h1>
+    <input class="input-box" type="text" name="num1" id="num1" > <br>        
+    <input class="input-box" type="text" name="num2" id="num2"> <br>
+    <button class="input-box" type="button" onclick="sum()" >sum</button>
+    <input type="" name="" value="">
+    
+
+    <div id="result">
+      
+    </div>
+    
+    <script>
+      function sum(){
+        const val1 = document.getElementById("num1").value
+        const val2 = document.getElementById("num2").value
+
+        const res = parseInt(val1) + parseInt(val2)
+
+        document.getElementById("result").innerHTML = "sum: " + res;
+      }
+    </script>
+
+  </body>  
+</html>
