@@ -1,0 +1,4 @@
+.container ,h2, input, p, button{
+  display: inline;
+  margin: 10px;
+}

@@ -1,0 +1,32 @@
+<html>
+  
+
+  <body>
+    <div id="container"></div>                                               
+
+    <script>
+      let state = {count:0};
+      
+      function onPress(){
+        state.count++;
+        btnComponentReRender();
+      }
+
+      function btnComponentReRender(){
+        document.getElementById("container").innerHTML = "";
+        const component = getUpdatedComponent();
+        document.getElementById("container").appendChild(component);
+      }
+
+      function getUpdatedComponent(){
+        const newBtn = document.createElement("button");
+        newBtn.innerHTML = `Counter ${state.count}`;
+        newBtn.setAttribute("onclick", `onPress()`);
+        return newBtn;
+      }
+      
+      btnComponentReRender();
+      
+    </script>
+  </body>
+</html>
